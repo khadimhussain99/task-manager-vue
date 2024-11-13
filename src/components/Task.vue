@@ -4,11 +4,7 @@
     v-for="item in tasks"
     :key="item.id"
   >
-    <input
-      type="checkbox"
-      value="item.isCompleted"
-      v-model="item.isCompleted"
-    />
+    <input type="checkbox" v-model="item.isCompleted" />
 
     <p
       class="flex grow text-ellipsis line-clamp-1 text-xs text-black ml-2"
@@ -18,7 +14,13 @@
     >
       {{ item.title }}
     </p>
-    <span>{{ item.dueDate }}</span>
+    <span
+      class="mr-4 text-xs text-gray-700"
+      :class="{
+        'line-through text-gray-500 cursor-not-allowed': item.isCompleted,
+      }"
+      >{{ date(item.dueDate) }}</span
+    >
     <button
       class="rounded-md bg-orange-400 mr-2 active:bg-orange-300 text-white px-3 py-2 text-xs"
       :class="{ 'cursor-not-allowed': item.isCompleted }"
@@ -37,7 +39,7 @@
 
 <script>
 import { Icon } from "@iconify/vue";
-// import moment from moment-timezone;
+import moment from "moment";
 
 export default {
   name: "TaskList",
@@ -49,5 +51,12 @@ export default {
     "handleComplete",
     "toggleTask",
   ],
+  setup() {
+    const date = (time) => {
+      return moment(time).format("DD-MMM-YYYY");
+    };
+
+    return { date };
+  },
 };
 </script>
